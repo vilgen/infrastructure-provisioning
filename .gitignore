@@ -1,0 +1,27 @@
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.terraform.lock.hcl
+*.tfplan
+.terraform/
+terraform.tfvars
+*.auto.tfvars
+crash.log
+
+# Ansible
+*.retry
+*.log
+inventory.ini
+kubeconfig.yaml
+
+# Python virtualenv (if used with Ansible)
+.venv/
+__pycache__/
+*.pyc
+
+# OS / Editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

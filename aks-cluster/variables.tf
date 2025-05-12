@@ -37,7 +37,7 @@ variable "vm_size" {
 variable "kubernetes_version" {
   description = "AKS Kubernetes version"
   type        = string
-  default     = "1.29.2"
+  default     = "1.31.1"
 }
 
 # ACR module

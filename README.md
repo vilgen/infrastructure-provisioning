@@ -39,8 +39,8 @@ az login
 ### 2. Provision Infra with terraform CLI:
 ```bash
 terraform init
-terraform plan
-terraform apply
+terraform plan -out=tfplan
+terraform apply tfplan
 ```
 
 After deployment, Terraform will output:
