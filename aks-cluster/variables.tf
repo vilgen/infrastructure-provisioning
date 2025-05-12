@@ -39,3 +39,10 @@ variable "kubernetes_version" {
   type        = string
   default     = "1.29.2"
 }
+
+# ACR module
+variable "acr_name" {
+  description = "Name of the Azure Container Registry"
+  type        = string
+  default     = "ewpacrregistry"
+}

@@ -75,3 +75,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
 #   mode                  = "System"
 #   vnet_subnet_id        = azurerm_subnet.aks_subnet.id
 # }
+
+# ACR module
+module "acr" {
+  source              = "./modules/acr"
+  acr_name            = var.acr_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  principal_id        = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+}
