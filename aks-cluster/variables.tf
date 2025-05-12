@@ -25,13 +25,13 @@ variable "dns_prefix" {
 variable "node_count" {
   description = "Number of nodes in default pool"
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "vm_size" {
   description = "VM size for default and system pools"
   type        = string
-  default     = "Standard_DS2_v2"
+  default     = "Standard_B2s"
 }
 
 variable "kubernetes_version" {

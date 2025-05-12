@@ -58,23 +58,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
     network_policy = "calico"
     dns_service_ip     = "10.2.0.10"
     service_cidr       = "10.2.0.0/24"
-    docker_bridge_cidr = "172.17.0.1/16"
+    #docker_bridge_cidr = "172.17.0.1/16"
   }
 
-  role_based_access_control {
-    enabled = true
-  }
-
+  role_based_access_control_enabled = true
   kubernetes_version = var.kubernetes_version
 }
 
 # Optional System Node Pool
-resource "azurerm_kubernetes_cluster_node_pool" "system_pool" {
-  name                  = "systemnp"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_DS2_v2"
-  node_count            = 1
-  os_type               = "Linux"
-  mode                  = "System"
-  vnet_subnet_id        = azurerm_subnet.aks_subnet.id
-}
+# resource "azurerm_kubernetes_cluster_node_pool" "system_pool" {
+#   name                  = "systemnp"
+#   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+#   vm_size               = "Standard_B1ms"
+#   node_count            = 1
+#   os_type               = "Linux"
+#   mode                  = "System"
+#   vnet_subnet_id        = azurerm_subnet.aks_subnet.id
+# }
