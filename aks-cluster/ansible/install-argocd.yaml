@@ -1,0 +1,40 @@
+---
+- name: Install Argo CD in AKS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    kubeconfig_path: "{{ lookup('env', 'KUBECONFIG') | default('./kubeconfig.yaml', true) }}"
+    argocd_namespace: argocd
+    argocd_install_url: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+  tasks:
+    - name: Create Argo CD namespace
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig_path }}"
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "{{ argocd_namespace }}"
+
+    - name: Install Argo CD manifests
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig_path }}"
+        state: present
+        src: "{{ argocd_install_url }}"
+        namespace: "{{ argocd_namespace }}"
+
+    - name: Patch argocd-server to LoadBalancer (for external access)
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig_path }}"
+        kind: Service
+        name: argocd-server
+        namespace: "{{ argocd_namespace }}"
+        definition:
+          spec:
+            type: LoadBalancer
+        merge_type:
+          - strategic-merge
