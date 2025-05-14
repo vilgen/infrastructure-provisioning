@@ -135,3 +135,47 @@ Or test via curl:
 ```bash
 curl http://<EXTERNAL-IP>
 ```
+
+## 🚀 Argo CD Setup on AKS (via Ansible)
+
+This playbook installs Argo CD in your AKS cluster using Ansible and configures it for external access via LoadBalancer.
+
+---
+
+## 📦 Prerequisites
+
+- A running AKS cluster (deployed via Terraform)
+- `kubectl` configured with access (`kubeconfig.yaml`)
+- `ansible` installed with the `kubernetes.core` collection:
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
+Run the playbook:
+```bash
+ansible-playbook install-argocd.yaml
+```
+
+### 🌐 Access the Argo CD UI
+Step 1: Get the External IP of the UI service
+```bash
+kubectl get svc argocd-server -n argocd
+```
+
+Step 2: Open the UI in your browser
+```bash
+https://<EXTERNAL-IP>
+```
+Note: Argo CD uses a self-signed certificate — your browser will warn you.
+
+### 🔐 Log in to Argo CD
+Default Credentials:
+Username: admin
+
+Password:
+```bash
+kubectl get secret argocd-initial-admin-secret -n argocd \
+  -o jsonpath="{.data.password}" | base64 -d && echo
+```
+You will be prompted to change the password after your first login.
