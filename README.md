@@ -62,3 +62,76 @@ kubectl get nodes
 ```bash
 terraform destroy
 ```
+
+
+## 📦 Ansible Setup and Usage
+This project uses Ansible to deploy workloads (like NGINX) to the AKS cluster provisioned by Terraform.
+
+✅ Prerequisites
+
+Terraform provisioning completed
+
+AKS cluster is running
+
+kubeconfig.yaml exported from Terraform output
+
+🔧 Install Ansible (macOS)
+```bash
+brew install ansible
+```
+Check version:
+
+```bash
+ansible --version
+```
+📥 Install Kubernetes Collection
+
+The Ansible playbook uses the kubernetes.core collection.
+
+Install it using:
+
+```bash
+ansible-galaxy collection install kubernetes.core
+```
+
+📄 Prepare Kubeconfig
+
+Export the kubeconfig from Terraform output and set the environment variable:
+
+```bash
+terraform output -raw aks_kube_config > kubeconfig.yaml
+export KUBECONFIG=$(pwd)/kubeconfig.yaml
+```
+
+Alternatively, you can hardcode the path inside the Ansible playbook.
+
+▶️ Run Ansible Playbook
+Deploy NGINX to the AKS cluster:
+
+```bash
+ansible-playbook deploy-nginx.yaml
+```
+
+This will:
+
+- Create a Deployment named nginx
+
+- Create a Service of type LoadBalancer to expose it
+
+🌐 Access the NGINX Endpoint
+Check the external IP:
+
+```bash
+kubectl get svc nginx-service
+```
+
+Then open the service in your browser:
+
+```bash
+http://<EXTERNAL-IP>
+```
+Or test via curl:
+
+```bash
+curl http://<EXTERNAL-IP>
+```
